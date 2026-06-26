@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
 
-function LoginPage({ onLogin }) {
+function LoginPage({ onSwitchToRegister, onLogin }) {
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -24,18 +24,17 @@ function LoginPage({ onLogin }) {
         console.log('Вход:', { login, password });
 
         setTimeout(() => {
-            setIsLoading(false);
+          setIsLoading(false);
 
-            // Временная логика для теста
-            if (login === 'admin' && password === 'admin') {
-                onLogin({ login, role: 'DIRECTOR' });
-            } else if (login === 'user' && password === 'user') {
-                onLogin({ login, role: 'USER' });
-            } else if (login === 'finmanager' && password === 'finmanager') {
-                onLogin({ login, role: 'FIN_MANAGER' });
-            } else {
-                setError('Неверный логин или пароль');
-            }
+          if (login === 'admin' && password === 'admin') {
+            onLogin();              // ← вернули, без аргументов
+          } else if (login === 'user' && password === 'user') {
+            onLogin();              // ← вернули
+          } else if (login === 'finmanager' && password === 'finmanager') {
+            onLogin();              // ← вернули
+          } else {
+            setError('Неверный логин или пароль');
+          }
         }, 1000);
     };
 
@@ -90,7 +89,16 @@ function LoginPage({ onLogin }) {
                     >
                         {isLoading ? 'Вход...' : 'Войти'}
                     </button>
-
+                    <div className="login-footer">
+                      Нет аккаунта?{' '}
+                      <button
+                        type="button"
+                        className="link-button"
+                        onClick={onSwitchToRegister}
+                      >
+                        Зарегистрироваться
+                      </button>
+                    </div>
                 </form>
             </div>
         </div>

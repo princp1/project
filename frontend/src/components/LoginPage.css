@@ -1,11 +1,9 @@
-/* frontend/src/components/LoginPage.css */
-
 .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(200deg, #0a2a6c, #0d4373, #0a6fa5);
+    background: #2C3E50;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -115,3 +113,19 @@
     font-weight: 600;
     color: #333;
 }
+.login-footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #7B8794;
+}
+.link-button {
+  background: none;
+  border: none;
+  color: #2E7CF6;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  font-family: inherit;
+}
+.link-button:hover { text-decoration: underline; }

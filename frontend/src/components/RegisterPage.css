@@ -1,0 +1,114 @@
+/* src/components/RegisterPage.css */
+
+/* === Тёмно-синий фон на всю страницу === */
+.auth-page {
+  min-height: 100vh;
+  background-color: #2C3E50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* === Белая карточка по центру === */
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 36px 32px 28px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.auth-card__title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C3E50;
+  margin-bottom: 24px;
+}
+
+.auth-card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-card__error {
+  background-color: #FCE9E7;
+  color: #B5301F;
+  border: 1px solid #F4C7C0;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.auth-card__footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #7B8794;
+}
+
+/* === Универсальное поле ввода (label + input/select) === */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label {
+  font-size: 13px;
+  color: #2C3E50;
+  font-weight: 500;
+}
+.field input,
+.field select {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #E1E5EA;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 14px;
+  color: #2C3E50;
+  outline: none;
+  font-family: inherit;
+}
+.field input:focus,
+.field select:focus {
+  border-color: #2E7CF6;
+  box-shadow: 0 0 0 3px rgba(46, 124, 246, 0.12);
+}
+.field input::placeholder { color: #A0A8B4; }
+
+/* === Кнопки === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-primary {
+  background-color: #2E7CF6;
+  color: #fff;
+}
+.btn-primary:hover { background-color: #1E6BE0; }
+.btn-block { width: 100%; }
+
+/* === Ссылка-кнопка в подвале === */
+.link-button {
+  background: none;
+  border: none;
+  color: #2E7CF6;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0;
+  font-family: inherit;
+}
+.link-button:hover { text-decoration: underline; }
