@@ -1,26 +1,24 @@
 /* src/components/ClaimsList.css */
 
-/* === Общий контейнер страницы === */
 .claims-page {
   max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 24px;
 }
 
-/* === Шапка (заголовок + кнопка Выйти) === */
-.claims-page__header {
+/* Ряд: заголовок + кнопка справа */
+.claims-page__title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
-.claims-page__header h1 {
-  font-size: 22px;
+
+.claims-page__title {
+  font-size: 20px;
   font-weight: 600;
   color: #2C3E50;
 }
 
-/* === Поле поиска === */
+/* Поле поиска */
 .search-input {
   width: 100%;
   max-width: 380px;
@@ -32,21 +30,21 @@
   margin-bottom: 16px;
   outline: none;
   background-color: #FFFFFF;
-  /* Иконка лупы слева */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237B8794' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
-  background-position: 12px center;
+  background-position: 10px center;
   font-family: inherit;
+  display: block;
 }
 .search-input:focus {
   border-color: #2E7CF6;
   box-shadow: 0 0 0 3px rgba(46, 124, 246, 0.12);
 }
 
-/* === Таблица === */
+/* Таблица */
 .data-table {
   width: 100%;
-  border-collapse: collapse;     /* убирает двойные линии между ячейками */
+  border-collapse: collapse;
   background-color: #FFFFFF;
   border: 1px solid #E1E5EA;
   border-radius: 8px;
@@ -60,6 +58,7 @@
   border-bottom: 1px solid #E1E5EA;
   color: #2C3E50;
   font-weight: 600;
+  white-space: nowrap;
 }
 .data-table tbody td {
   padding: 14px 16px;
@@ -67,13 +66,14 @@
   color: #2C3E50;
 }
 .data-table tbody tr:last-child td {
-  border-bottom: none;            /* убираем линию под последней строкой */
+  border-bottom: none;
 }
 .data-table tbody tr:hover {
-  background-color: #FAFBFC;       /* подсветка при наведении */
+  background-color: #FAFBFC;
+  cursor: pointer;
 }
 
-/* === Бейдж статуса === */
+/* Бейджи статусов */
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
@@ -81,21 +81,22 @@
   font-size: 12px;
   font-weight: 500;
 }
+.status-NEW,
 .status-ON_AGREE {
-  background-color: #FFF4E5;       /* оранжевый фон */
-  color: #C77800;                  /* тёмно-оранжевый текст */
+  background-color: #FFF4E5;
+  color: #C77800;
 }
 .status-APPROVED,
 .status-PAID {
-  background-color: #E6F4EA;       /* зелёный фон */
-  color: #1E7B3A;                  /* тёмно-зелёный текст */
+  background-color: #E6F4EA;
+  color: #1E7B3A;
 }
 .status-REJECTED {
-  background-color: #FCE9E7;       /* красный фон */
-  color: #B5301F;                  /* тёмно-красный текст */
+  background-color: #FCE9E7;
+  color: #B5301F;
 }
 
-/* === Кнопки === */
+/* Кнопки */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -109,15 +110,10 @@
   cursor: pointer;
   font-family: inherit;
 }
-.btn-secondary {
-  background-color: #FFFFFF;
-  color: #2C3E50;
-  border: 1px solid #E1E5EA;
+.btn-primary {
+  background-color: #2E7CF6;
+  color: #FFFFFF;
 }
-.btn-secondary:hover {
-  background-color: #FAFBFC;
-}
-
-.muted {
-  color: #7B8794;
+.btn-primary:hover {
+  background-color: #1E6BE0;
 }

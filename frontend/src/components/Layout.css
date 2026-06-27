@@ -1,0 +1,144 @@
+/* src/components/Layout.css */
+
+/* === ОБЩИЙ КАРКАС === */
+.layout {
+  display: flex;
+  min-height: 100vh;          /* на всю высоту экрана */
+  background-color: #F5F6F8;
+}
+
+/* === ЛЕВАЯ КОЛОНКА — сайдбар === */
+.sidebar {
+  width: 220px;
+  min-height: 100vh;
+  background-color: #2C3E50;  /* тёмно-синий, как на макете */
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;             /* не сжимается */
+}
+
+/* Логотип вверху */
+.sidebar__logo {
+  padding: 24px 20px 20px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 8px;
+}
+
+/* Навигация */
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 10px;
+  flex: 1;
+}
+
+/* Каждая ссылка в меню */
+.sidebar__link {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 6px;
+  color: #D5DAE0;             /* сероватый текст */
+  font-size: 14px;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.sidebar__link:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+  text-decoration: none;
+}
+/* Активная ссылка — синяя */
+.sidebar__link.active {
+  background-color: #2E7CF6;
+  color: #FFFFFF;
+}
+
+/* Кнопка выхода */
+.sidebar__logout {
+  margin: 16px 10px 24px 10px;
+  padding: 10px 14px;
+  background: none;
+  border: none;
+  color: #D5DAE0;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  text-align: left;
+  font-family: inherit;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.sidebar__logout:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+}
+
+/* === ПРАВАЯ КОЛОНКА === */
+.layout__right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;                /* чтобы контент не вылезал */
+}
+
+/* Шапка справа — бейдж пользователя */
+.layout__header {
+  height: 56px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #E1E5EA;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;  /* юзер-бейдж справа */
+  padding: 0 28px;
+  flex-shrink: 0;
+}
+
+/* Юзер-бейдж */
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-badge__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #2E7CF6;
+  color: #FFFFFF;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-badge__info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.user-badge__name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #2C3E50;
+  line-height: 1.2;
+}
+
+.user-badge__role {
+  font-size: 11px;
+  color: #7B8794;
+  line-height: 1.2;
+}
+
+/* Основной контент — с отступами */
+.layout__content {
+  flex: 1;
+  padding: 28px 28px;
+  overflow-x: auto;
+}

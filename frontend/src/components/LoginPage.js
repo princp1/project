@@ -1,108 +1,98 @@
+// src/components/RegisterPage.js
+
 import React, { useState } from 'react';
-import './LoginPage.css';
+import './RegisterPage.css';
 
-function LoginPage({ onSwitchToRegister, onLogin }) {
+export default function RegisterPage({ onSwitchToLogin }) {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [department, setDepartment] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!fullName || !email || !department || !password) {
+      setError('Заполните все поля');
+      return;
+    }
+    if (password.length < 4) {
+      setError('Пароль должен быть не короче 4 символов');
+      return;
+    }
+    setError('');
+    // Заглушка — пока просто переключаем на вход
+    alert(`Регистрация:\nФИО: ${fullName}\nEmail: ${email}\nОтдел: ${department}`);
+    onSwitchToLogin();
+  };
 
-    // Обработчик отправки формы
-    const handleSubmit = (e) => {
-        e.preventDefault();
+  return (
+    <div className="auth-page">
+      <div className="auth-card">
+        <h1 className="auth-card__title">Регистрация</h1>
 
-        if (!login || !password) {
-            setError('Заполните все поля');
-            return;
-        }
+        <form onSubmit={handleSubmit} className="auth-card__form">
+          <div className="field">
+            <label htmlFor="fullName">ФИО</label>
+            <input
+              id="fullName"
+              type="text"
+              placeholder="Введите ФИО"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
+          </div>
 
-        setError('');
-        setIsLoading(true);
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Введите адрес электронной почты"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-        // Имитация запроса к серверу (пока заглушка)
-        console.log('Вход:', { login, password });
+          <div className="field">
+            <label htmlFor="department">Подразделение</label>
+            <select
+              id="department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+            >
+              <option value="">Выберите подразделение</option>
+              <option value="Маркетинг">Маркетинг</option>
+              <option value="Канцелярия">Канцелярия</option>
+              <option value="Бухгалтерия">Бухгалтерия</option>
+            </select>
+          </div>
 
-        setTimeout(() => {
-          setIsLoading(false);
+          <div className="field">
+            <label htmlFor="password">Пароль</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Придумайте пароль"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-          if (login === 'admin' && password === 'admin') {
-            onLogin();              // ← вернули, без аргументов
-          } else if (login === 'user' && password === 'user') {
-            onLogin();              // ← вернули
-          } else if (login === 'finmanager' && password === 'finmanager') {
-            onLogin();              // ← вернули
-          } else {
-            setError('Неверный логин или пароль');
-          }
-        }, 1000);
-    };
+          {error && <div className="auth-card__error">{error}</div>}
 
-    return (
-        <div className="login-container">
-            <div className="login-box">
-                {/* Логотип/заголовок */}
-                <div className="login-header">
-                    <h1>Вход в систему</h1>
-                    <p>Система согласования заявок</p>
-                </div>
+          <button type="submit" className="btn btn-primary btn-block">
+            Зарегистрироваться
+          </button>
+        </form>
 
-                {/* Форма входа */}
-                <form onSubmit={handleSubmit} className="login-form">
-                    <div className="form-group">
-                        <label htmlFor="login">Логин</label>
-                        <input
-                            id="login"
-                            type="text"
-                            placeholder="Введите логин"
-                            value={login}
-                            onChange={(e) => setLogin(e.target.value)}
-                            disabled={isLoading}
-                            autoFocus
-                        />
-                    </div>
-
-                    <div className="form-group">
-                        <label htmlFor="password">Пароль</label>
-                        <input
-                            id="password"
-                            type="password"
-                            placeholder="Введите пароль"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            disabled={isLoading}
-                        />
-                    </div>
-
-                    {/* Ошибка */}
-                    {error && (
-                        <div className="error-message">
-                            {error}
-                        </div>
-                    )}
-
-                    {/* Кнопка входа */}
-                    <button
-                        type="submit"
-                        className="login-button"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Вход...' : 'Войти'}
-                    </button>
-                    <div className="login-footer">
-                      Нет аккаунта?{' '}
-                      <button
-                        type="button"
-                        className="link-button"
-                        onClick={onSwitchToRegister}
-                      >
-                        Зарегистрироваться
-                      </button>
-                    </div>
-                </form>
-            </div>
+        <div className="auth-card__footer">
+          Есть аккаунт?{' '}
+          <button type="button" className="link-button" onClick={onSwitchToLogin}>
+            Войти
+          </button>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
-
-export default LoginPage;
