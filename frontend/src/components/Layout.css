@@ -1,9 +1,7 @@
-/* src/components/Layout.css */
-
 /* === ОБЩИЙ КАРКАС === */
 .layout {
   display: flex;
-  min-height: 100vh;          /* на всю высоту экрана */
+  min-height: 100vh;
   background-color: #F5F6F8;
 }
 
@@ -11,10 +9,10 @@
 .sidebar {
   width: 220px;
   min-height: 100vh;
-  background-color: #2C3E50;  /* тёмно-синий, как на макете */
+  background-color: #2C3E50;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;             /* не сжимается */
+  flex-shrink: 0;
 }
 
 /* Логотип вверху */
@@ -33,7 +31,11 @@
   flex-direction: column;
   gap: 2px;
   padding: 0 10px;
-  flex: 1;
+}
+
+.sidebar__nav--bottom {
+  margin-top: auto;
+  padding-bottom: 8px;
 }
 
 /* Каждая ссылка в меню */
@@ -41,25 +43,33 @@
   display: block;
   padding: 10px 14px;
   border-radius: 6px;
-  color: #D5DAE0;             /* сероватый текст */
+  color: #D5DAE0;
   font-size: 14px;
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
+
 .sidebar__link:hover {
   background-color: rgba(255, 255, 255, 0.06);
   color: #FFFFFF;
   text-decoration: none;
 }
-/* Активная ссылка — синяя */
+
 .sidebar__link.active {
   background-color: #2E7CF6;
   color: #FFFFFF;
 }
 
+/* Разделитель */
+.sidebar__divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  margin: 8px 10px;
+}
+
 /* Кнопка выхода */
 .sidebar__logout {
-  margin: 16px 10px 24px 10px;
+  margin: 0;
   padding: 10px 14px;
   background: none;
   border: none;
@@ -70,7 +80,9 @@
   text-align: left;
   font-family: inherit;
   transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
 }
+
 .sidebar__logout:hover {
   background-color: rgba(255, 255, 255, 0.06);
   color: #FFFFFF;
@@ -81,17 +93,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;                /* чтобы контент не вылезал */
+  min-width: 0;
 }
 
-/* Шапка справа — бейдж пользователя */
+/* Шапка */
 .layout__header {
   height: 56px;
   background-color: #FFFFFF;
   border-bottom: 1px solid #E1E5EA;
   display: flex;
   align-items: center;
-  justify-content: flex-end;  /* юзер-бейдж справа */
+  justify-content: flex-end;
   padding: 0 28px;
   flex-shrink: 0;
 }
@@ -136,7 +148,7 @@
   line-height: 1.2;
 }
 
-/* Основной контент — с отступами */
+/* Основной контент */
 .layout__content {
   flex: 1;
   padding: 28px 28px;

@@ -1,9 +1,9 @@
-// src/components/ClaimsList.js
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './ClaimsList.css';
 
-// потом заменить на обращение к бд!!!!!!!!!!
+// Моковые данные — потом заменить на обращение к бд
 const contractors = [
   { id: 1, name: 'ООО "Маркет"' },
   { id: 2, name: 'ООО "Плюс"' },
@@ -12,10 +12,10 @@ const contractors = [
 ];
 
 const claims = [
-  { id: '№12345678', createdAt: '21.06.2026 18:03', contractorId: 1, amount: 15000.00, status: 'ON_AGREE' },
-  { id: '№58427897', createdAt: '20.06.2026 10:05', contractorId: 2, amount: 432000.00, status: 'ON_AGREE' },
-  { id: '№15686432', createdAt: '18.06.2026 15:36', contractorId: 3, amount: 8000.00, status: 'APPROVED' },
-  { id: '№15678634', createdAt: '17.06.2026 14:55', contractorId: 4, amount: 8500.00, status: 'REJECTED' },
+  { id: '12345678', createdAt: '21.06.2026 18:03', contractorId: 1, amount: 15000.00, status: 'ON_AGREE' },
+  { id: '58427897', createdAt: '20.06.2026 10:05', contractorId: 2, amount: 432000.00, status: 'ON_AGREE' },
+  { id: '15686432', createdAt: '18.06.2026 15:36', contractorId: 3, amount: 8000.00, status: 'APPROVED' },
+  { id: '15678634', createdAt: '17.06.2026 14:55', contractorId: 4, amount: 8500.00, status: 'REJECTED' },
 ];
 
 const statusLabels = {
@@ -35,6 +35,8 @@ function formatMoney(n) {
 
 export default function ClaimsList() {
   const [search, setSearch] = useState('');
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const filtered = claims.filter((claim) => {
     const q = search.trim().toLowerCase();
@@ -47,12 +49,27 @@ export default function ClaimsList() {
     );
   });
 
+  const handleRowClick = (claim) => {
+    // В зависимости от статуса и роли — разные страницы
+    if (claim.status === 'ON_AGREE' && user?.role === 'DIRECTOR') {
+      navigate(`/claims/${claim.id}/approval`);
+    } else if (claim.status === 'APPROVED' && user?.role === 'FIN_MANAGER') {
+      navigate(`/claims/${claim.id}/payment`);
+    } else {
+      // Просмотр заявки (пока просто alert)
+      alert(`Заявка ${claim.id}\nСтатус: ${statusLabels[claim.status]}`);
+    }
+  };
+
   return (
     <div className="claims-page">
       {/* Заголовок страницы + кнопка "Создать заявку" */}
       <div className="claims-page__title-row">
         <h1 className="claims-page__title">Мои заявки</h1>
-        <button className="btn btn-primary">
+        <button
+          className="btn btn-primary"
+          onClick={() => navigate('/claims/new')}
+        >
           + Создать заявку
         </button>
       </div>
@@ -88,11 +105,15 @@ export default function ClaimsList() {
             filtered.map((claim) => {
               const contractor = contractors.find((c) => c.id === claim.contractorId);
               return (
-                <tr key={claim.id}>
-                  <td>{claim.id}</td>
+                <tr
+                  key={claim.id}
+                  onClick={() => handleRowClick(claim)}
+                  className="clickable-row"
+                >
+                  <td>№{claim.id}</td>
                   <td>{claim.createdAt}</td>
                   <td>{contractor ? contractor.name : '—'}</td>
-                  <td>{formatMoney(claim.amount)}</td>
+                  <td>{formatMoney(claim.amount)} ₽</td>
                   <td>
                     <span className={`status-badge status-${claim.status}`}>
                       {statusLabels[claim.status]}
