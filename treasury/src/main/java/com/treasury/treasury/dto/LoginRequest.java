@@ -1,8 +1,14 @@
 package com.treasury.treasury.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
-public record LoginRequest(
-        @NotBlank String login,
-        @NotBlank String password
-) {}
+@Data
+public class LoginRequest {
+
+    @NotBlank(message = "Логин обязателен")
+    private String login;
+
+    @NotBlank(message = "Пароль обязателен")
+    private String password;
+}

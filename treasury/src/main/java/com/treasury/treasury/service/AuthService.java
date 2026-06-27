@@ -3,7 +3,7 @@ package com.treasury.treasury.service;
 import com.treasury.treasury.dto.AuthResponse;
 import com.treasury.treasury.dto.LoginRequest;
 import com.treasury.treasury.dto.RegisterRequest;
-import com.treasury.treasury.entity.User;
+import com.treasury.treasury.model.User;
 import com.treasury.treasury.repository.UserRepos;
 import com.treasury.treasury.security.JwtUtil;
 import lombok.RequiredArgsConstructor;

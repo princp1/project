@@ -18,7 +18,7 @@ public class StatusClaimS {
         return repository.findAll();
     }
 
-    public StatusClaim getById(Integer id) {
+    public StatusClaim getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -26,7 +26,7 @@ public class StatusClaimS {
         return repository.save(status);
     }
 
-    public void delete(Integer id) {
+    public void delete(Long id) {
         repository.deleteById(id);
     }
 }

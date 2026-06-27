@@ -11,7 +11,7 @@ public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_файла")
-    private Integer id;
+    private Long id;
 
     @Column(name = "Имя_файла")
     private String fileName;

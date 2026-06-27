@@ -12,7 +12,7 @@ public class Claim {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Номер_заявки")
-    private Integer id;
+    private Long id;
 
     @Column(name = "Дата_создания")
     private LocalDateTime createdDate = LocalDateTime.now();

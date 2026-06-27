@@ -1,36 +1,68 @@
 package com.treasury.treasury.service;
 
-import com.treasury.treasury.entity.User;
+import com.treasury.treasury.dto.*;
+import com.treasury.treasury.model.User;
 import com.treasury.treasury.repository.UserRepos;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UserS {
-    private final UserRepos repository;
 
-    public UserS(UserRepos repository) {
-        this.repository = repository;
+    private final UserRepos userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+
+    @Transactional
+    public AuthResponse register(RegisterRequest request) {
+        if (userRepository.existsByLogin(request.getLogin())) {
+            throw new RuntimeException("Пользователь с таким логином уже существует");
+        }
+
+        User user = User.builder()
+                .login(request.getLogin())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .fullName(request.getFullName())
+                .role(request.getRole())
+                .build();
+
+        user = userRepository.save(user);
+
+        String token = jwtService.generateToken(user);
+        return AuthResponse.builder()
+                .token(token)
+                .login(user.getLogin())
+                .fullName(user.getFullName())
+                .role(user.getRole().name())
+                .build();
     }
 
-    public List<User> getAll() {
-        return repository.findAll();
+    public AuthResponse login(LoginRequest request) {
+        User user = userRepository.findByLogin(request.getLogin())
+                .orElseThrow(() -> new RuntimeException("Неверный логин или пароль"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Неверный логин или пароль");
+        }
+
+        String token = jwtService.generateToken(user);
+        return AuthResponse.builder()
+                .token(token)
+                .login(user.getLogin())
+                .fullName(user.getFullName())
+                .role(user.getRole().name())
+                .build();
     }
 
-    public User getById(Integer id) {
-        return repository.findById(id).orElse(null);
+    public UserResponse getCurrentUser(User user) {
+        return UserResponse.from(user);
     }
 
     public User findByLogin(String login) {
-        return repository.findByLogin(login).orElse(null);
-    }
-
-    public User save(User user) {
-        return repository.save(user);
-    }
-
-    public void delete(Integer id) {
-        repository.deleteById(id);
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
     }
 }

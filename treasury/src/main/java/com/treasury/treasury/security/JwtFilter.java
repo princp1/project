@@ -1,6 +1,6 @@
 package com.treasury.treasury.security;
 
-import com.treasury.treasury.entity.User;
+import com.treasury.treasury.model.User;
 import com.treasury.treasury.repository.UserRepos;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

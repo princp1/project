@@ -10,7 +10,7 @@ public class Contractor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_контрагента")
-    private Integer id;
+    private Long id;
 
     @Column(name = "Название")
     private String name;

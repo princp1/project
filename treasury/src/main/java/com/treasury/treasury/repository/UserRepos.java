@@ -1,12 +1,13 @@
 package com.treasury.treasury.repository;
-import com.treasury.treasury.entity.User;
+import com.treasury.treasury.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepos extends JpaRepository<User, Integer> {
+public interface UserRepos extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
+    boolean existsByLogin(String login);
 }
 
