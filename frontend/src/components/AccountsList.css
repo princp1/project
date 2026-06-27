@@ -1,0 +1,73 @@
+.accounts-page {
+  max-width: 1100px;
+}
+
+.accounts-page__title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.accounts-page__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C3E50;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 380px;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border: 1px solid #E1E5EA;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 16px;
+  outline: none;
+  background-color: #FFFFFF;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237B8794' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  font-family: inherit;
+  display: block;
+}
+
+.search-input:focus {
+  border-color: #2E7CF6;
+  box-shadow: 0 0 0 3px rgba(46, 124, 246, 0.12);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+  border: 1px solid #E1E5EA;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.data-table thead th {
+  text-align: left;
+  padding: 12px 16px;
+  background-color: #FAFBFC;
+  border-bottom: 1px solid #E1E5EA;
+  color: #2C3E50;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table tbody td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #E1E5EA;
+  color: #2C3E50;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tbody tr:hover {
+  background-color: #FAFBFC;
+}

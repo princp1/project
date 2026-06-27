@@ -1,5 +1,3 @@
-// src/components/Profile.js
-
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import './Profile.css';
@@ -18,12 +16,10 @@ export default function Profile() {
   return (
     <div className="profile-page">
       <h1 className="profile-page__title">Профиль</h1>
-
       <div className="profile-card">
         <div className="profile-card__avatar">
           {user.fullName.charAt(0)}
         </div>
-
         <div className="profile-card__fields">
           <div className="profile-row">
             <span className="profile-row__label">ФИО</span>
@@ -35,9 +31,7 @@ export default function Profile() {
           </div>
           <div className="profile-row">
             <span className="profile-row__label">Роль</span>
-            <span className="profile-row__value">
-              {roleLabels[user.role] || user.role}
-            </span>
+            <span className="profile-row__value">{roleLabels[user.role] || user.role}</span>
           </div>
         </div>
       </div>
