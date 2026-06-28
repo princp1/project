@@ -20,10 +20,10 @@ public class Claim {
     private Long id;
 
     @Column(nullable = false, unique = true, updatable = false, length = 32)
-    private String claimNumber;       // например "2026-000123"
+    private String claimNumber;
 
     @Column(nullable = false)
-    private Integer vatRate;          // 0, 10 или 20
+    private Integer vatRate;
 
     @Column(nullable = false)
     private String description;
@@ -44,8 +44,9 @@ public class Claim {
     @JoinColumn(name = "contractor_id", nullable = false)
     private Contractor contractor;
 
+    // ✅ БЫЛО nullable = false — стало без ограничения (выбирается на этапе оплаты)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @OneToMany(mappedBy = "claim", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -56,13 +57,10 @@ public class Claim {
     private LocalDateTime createdAt;
 
     private LocalDateTime approvedAt;
-
     private LocalDateTime paidAt;
 
     private String approvedBy;
-
     private String paidBy;
-
     private String rejectionReason;
 
     @PrePersist
@@ -74,8 +72,8 @@ public class Claim {
         DRAFT,
         PENDING_APPROVAL,
         APPROVED,
-        REJECTED,
         PENDING_PAYMENT,
-        PAID
+        PAID,
+        REJECTED
     }
 }

@@ -1,10 +1,12 @@
 package com.treasury.treasury.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class ApiResponse<T> {
     private boolean success;
     private String message;
@@ -19,6 +21,8 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(false, message, null);
+
+        return ApiResponse.<T>builder().success(false).message(message).data(null).build();
+
     }
 }

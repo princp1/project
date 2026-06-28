@@ -9,4 +9,5 @@ public interface ClaimRepository extends JpaRepository<Claim, Long> {
     List<Claim> findAllByOrderByCreatedAtDesc();
     List<Claim> findByUserOrderByCreatedAtDesc(User user);
     long count(); // для генерации claimNumber
+    boolean existsByClaimNumber(String claimNumber);
 }
