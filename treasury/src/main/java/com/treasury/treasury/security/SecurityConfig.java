@@ -29,8 +29,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // ← ЭТА СТРОКА ВАЖНА!
+
+                        .requestMatchers("/api/auth/**").permitAll()
+
+                        .requestMatchers("/api/departments", "/api/departments/**").permitAll()   // ← добавь
+
                         .anyRequest().authenticated()
+
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
