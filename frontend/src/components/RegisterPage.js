@@ -30,11 +30,16 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register({
-        login: email,
-        password,
-        fullName,
-        role: 'USER',
-      });
+
+                login: email,
+
+                password,
+
+                fullName,
+
+                role: 'USER',   // бэкенд принимает строки USER, APPROVER, PAYMENT_MANAGER, ADMIN
+
+              });
       navigate('/claims');
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Ошибка регистрации');

@@ -1,4 +1,5 @@
 package com.treasury.treasury.repository;
+
 import com.treasury.treasury.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,4 +11,3 @@ public interface UserRepos extends JpaRepository<User, Long> {
     Optional<User> findByLogin(String login);
     boolean existsByLogin(String login);
 }
-

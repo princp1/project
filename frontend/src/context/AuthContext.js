@@ -21,13 +21,15 @@ export function AuthProvider({ children }) {
 
     client.get('/auth/me')
       .then((res) => {
-        const u = {
-          login: res.data.login,
-          fullName: res.data.fullName,
-          role: res.data.role,
+        // бэкенд возвращает ApiResponse<UserResponse>: {success, message, data: {id, login, fullName, role}}
+        const u = res.data.data;
+        const safeUser = {
+          login: u.login,
+          fullName: u.fullName,
+          role: u.role,
         };
-        setUser(u);
-        localStorage.setItem(USER_KEY, JSON.stringify(u));
+        setUser(safeUser);
+        localStorage.setItem(USER_KEY, JSON.stringify(safeUser));
       })
       .catch(() => {
         localStorage.removeItem(TOKEN_KEY);
@@ -42,7 +44,9 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   const login = async (login, password) => {
-    const { data } = await client.post('/auth/login', { login, password });
+    const res = await client.post('/auth/login', { login, password });
+    // ApiResponse<AuthResponse>: {success, message, data: {token, login, fullName, role}}
+    const data = res.data.data;
     localStorage.setItem(TOKEN_KEY, data.token);
     const safeUser = {
       login: data.login,
@@ -54,9 +58,10 @@ export function AuthProvider({ children }) {
   };
 
   const register = async ({ login, password, fullName, role }) => {
-    const { data } = await client.post('/auth/register', {
+    const res = await client.post('/auth/register', {
       login, password, fullName, role,
     });
+    const data = res.data.data;
     localStorage.setItem(TOKEN_KEY, data.token);
     const safeUser = {
       login: data.login,
