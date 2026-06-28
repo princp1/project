@@ -17,7 +17,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -60,9 +62,12 @@ public class User implements UserDetails {
     @Override public boolean isEnabled()               { return true; }
 
     public enum Role {
-        USER,
-        APPROVER,
-        PAYMENT_MANAGER,
-        ADMIN
+
+        USER,          // обычный сотрудник отдела — видит только свои заявки
+
+        DIRECTOR,      // директор — согласовывает заявки
+
+        FIN_MANAGER    // фин. менеджер — выбирает счёт и оплачивает
+
     }
 }

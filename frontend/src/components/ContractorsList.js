@@ -1,153 +1,95 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import client from '../api/client';
 import './ContractorsList.css';
 
-// Моковые данные контрагентов
-const contractors = [
-  { id: 1, shortName: 'ООО "Маркет"', fullName: 'Общество с ограниченной ответственностью "Маркет"', inn: '1234567890', kpp: '123456789' },
-  { id: 2, shortName: 'ООО "Плюс"', fullName: 'Общество с ограниченной ответственностью "Плюс"', inn: '2345678901', kpp: '234567890' },
-  { id: 3, shortName: 'ООО "Графика"', fullName: 'Общество с ограниченной ответственностью "Графика"', inn: '3456789012', kpp: '345678901' },
-  { id: 4, shortName: 'ОАО "Салют"', fullName: 'Открытое акционерное общество "Салют"', inn: '4567890123', kpp: '456789012' },
-  { id: 5, shortName: 'ЗАО "Вектор"', fullName: 'Закрытое акционерное общество "Вектор"', inn: '5678901234', kpp: '567890123' },
-];
+const EMPTY = { name: '', fullName: '', inn: '', kpp: '',
+                bankAccount: '', address: '', phone: '', email: '' };
 
 export default function ContractorsList() {
+  const { user } = useAuth();
+  const canEdit = user.role === 'DIRECTOR' || user.role === 'FIN_MANAGER';
+
+  const [list, setList] = useState([]);
   const [search, setSearch] = useState('');
-  const [showModal, setShowModal] = useState(false);
-  const [newContractor, setNewContractor] = useState({
-    shortName: '',
-    fullName: '',
-    inn: '',
-    kpp: ''
-  });
+  const [editing, setEditing] = useState(null); // null | 'new' | id
+  const [form, setForm] = useState(EMPTY);
+  const [error, setError] = useState('');
 
-  const filtered = contractors.filter((c) => {
-    const q = search.trim().toLowerCase();
-    if (!q) return true;
-    return (
-      c.shortName.toLowerCase().includes(q) ||
-      c.fullName.toLowerCase().includes(q) ||
-      c.inn.includes(q)
-    );
-  });
+  const load = () => {
+    client.get('/contractors', { params: { search } })
+      .then(r => setList(r.data.data || []));
+  };
+  useEffect(() => { load(); }, [search]);
 
-  const handleAddContractor = (e) => {
-    e.preventDefault();
-    // TODO: добавить запрос к бэку
-    alert(`Добавлен контрагент:\n${newContractor.shortName}`);
-    setShowModal(false);
-    setNewContractor({ shortName: '', fullName: '', inn: '', kpp: '' });
+  const startNew = () => { setEditing('new'); setForm(EMPTY); setError(''); };
+  const startEdit = c => {
+    setEditing(c.id);
+    setForm({ ...EMPTY, ...c });
+    setError('');
+  };
+  const cancel = () => { setEditing(null); setError(''); };
+
+  const save = async () => {
+    try {
+      if (editing === 'new') {
+        await client.post('/contractors', form);
+      } else {
+        await client.put(`/contractors/${editing}`, form);
+      }
+      setEditing(null);
+      load();
+    } catch (e) {
+      setError(e.response?.data?.message || 'Ошибка сохранения');
+    }
+  };
+
+  const remove = async (id) => {
+    if (!window.confirm('Удалить контрагента?')) return;
+    await client.delete(`/contractors/${id}`);
+    load();
   };
 
   return (
     <div className="contractors-page">
-      {/* Заголовок страницы + кнопка */}
-      <div className="contractors-page__title-row">
-        <h1 className="contractors-page__title">Справочник контрагентов</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => setShowModal(true)}
-        >
-          + Добавить контрагента
-        </button>
+      <div className="page-header">
+        <h1>Контрагенты</h1>
+        {canEdit && <button onClick={startNew}>+ Добавить</button>}
       </div>
 
-      {/* Поле поиска */}
-      <input
-        type="text"
-        className="search-input"
-        placeholder="Поиск по названию"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <input placeholder="Поиск по названию или ИНН..."
+             value={search} onChange={e => setSearch(e.target.value)} />
 
-      {/* Таблица */}
-      {filtered.length === 0 ? (
-        <div className="empty-state">Ничего не найдено</div>
-      ) : (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>№ Контрагента</th>
-              <th>Название</th>
-              <th>Полное название</th>
-              <th>ИНН</th>
-              <th>КПП</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((contractor) => (
-              <tr key={contractor.id}>
-                <td>{contractor.id}</td>
-                <td>{contractor.shortName}</td>
-                <td>{contractor.fullName}</td>
-                <td>{contractor.inn}</td>
-                <td>{contractor.kpp}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <table>
+        <thead>
+          <tr><th>Название</th><th>Полное название</th>
+              <th>ИНН</th><th>КПП</th>{canEdit && <th></th>}</tr>
+        </thead>
+        <tbody>
+          {list.map(c =>
+            <tr key={c.id}>
+              <td>{c.name}</td>
+              <td>{c.fullName}</td>
+              <td>{c.inn}</td>
+              <td>{c.kpp}</td>
+              {canEdit && <td>
+                <button onClick={() => startEdit(c)}>✎</button>
+                <button onClick={() => remove(c.id)}>×</button>
+              </td>}
+            </tr>)}
+        </tbody>
+      </table>
 
-      {/* Модальное окно добавления */}
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2 className="modal__title">Добавить контрагента</h2>
-            <form onSubmit={handleAddContractor} className="modal__form">
-              <div className="field">
-                <label htmlFor="shortName">Название</label>
-                <input
-                  id="shortName"
-                  type="text"
-                  placeholder="Краткое название"
-                  value={newContractor.shortName}
-                  onChange={(e) => setNewContractor({ ...newContractor, shortName: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="fullName">Полное название</label>
-                <input
-                  id="fullName"
-                  type="text"
-                  placeholder="Полное юридическое название"
-                  value={newContractor.fullName}
-                  onChange={(e) => setNewContractor({ ...newContractor, fullName: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="inn">ИНН</label>
-                <input
-                  id="inn"
-                  type="text"
-                  placeholder="10 или 12 цифр"
-                  value={newContractor.inn}
-                  onChange={(e) => setNewContractor({ ...newContractor, inn: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="kpp">КПП</label>
-                <input
-                  id="kpp"
-                  type="text"
-                  placeholder="9 цифр"
-                  value={newContractor.kpp}
-                  onChange={(e) => setNewContractor({ ...newContractor, kpp: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="modal__actions">
-                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
-                  Отмена
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Добавить
-                </button>
-              </div>
-            </form>
-          </div>
+      {editing !== null && (
+        <div className="modal">
+          <h3>{editing === 'new' ? 'Новый контрагент' : 'Редактирование'}</h3>
+          {['name','fullName','inn','kpp','bankAccount','address','phone','email']
+            .map(f =>
+              <input key={f} name={f} placeholder={f}
+                     value={form[f]} onChange={e => setForm({...form, [f]: e.target.value})} />)}
+          {error && <div className="error">{error}</div>}
+          <button onClick={save}>Сохранить</button>
+          <button onClick={cancel}>Отмена</button>
         </div>
       )}
     </div>

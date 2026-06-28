@@ -12,10 +12,10 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
-public class CreateClaimRequest {
-    @NotNull private Long contractorId;
-    @NotNull @Positive private BigDecimal amount;
-    @NotNull private Integer vatRate;        // 0, 10 или 20
-    @NotBlank private String description;    // назначение
-    // сами файлы приходят отдельно через multipart
+public class AccountRequest {
+    @NotBlank private String name;
+    @NotBlank @Pattern(regexp = "\\d{20}") private String accountNumber;
+    @NotBlank private String currency;
+    @NotNull @PositiveOrZero private BigDecimal balance;
+    private String bank;
 }

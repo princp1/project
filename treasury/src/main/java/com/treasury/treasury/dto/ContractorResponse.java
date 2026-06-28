@@ -7,30 +7,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data @Builder
 public class ContractorResponse {
     private Long id;
     private String name;
+    private String fullName;
     private String inn;
+    private String kpp;
     private String bankAccount;
     private String address;
     private String phone;
     private String email;
-    private LocalDateTime createdAt;
 
-    public static ContractorResponse from(Contractor contractor) {
+    public static ContractorResponse from(Contractor c) {
         return ContractorResponse.builder()
-                .id(contractor.getId())
-                .name(contractor.getName())
-                .inn(contractor.getInn())
-                .bankAccount(contractor.getBankAccount())
-                .address(contractor.getAddress())
-                .phone(contractor.getPhone())
-                .email(contractor.getEmail())
-                .createdAt(contractor.getCreatedAt())
+                .id(c.getId()).name(c.getName()).fullName(c.getFullName())
+                .inn(c.getInn()).kpp(c.getKpp())
+                .bankAccount(c.getBankAccount())
+                .address(c.getAddress()).phone(c.getPhone()).email(c.getEmail())
                 .build();
     }
 }

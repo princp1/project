@@ -17,6 +17,12 @@ public class Contractor {
     private Long id;
 
     @Column(nullable = false)
+    private String fullName;   // "Общество с ограниченной ответственностью ..."
+
+    @Column(nullable = false, length = 9)
+    private String kpp;        // КПП — 9 цифр
+
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.treasury.treasury.repository.DepartmentRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class UserS {
     private final UserRepos userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final DepartmentRepository departmentRepository;
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
@@ -30,6 +32,13 @@ public class UserS {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .fullName(request.getFullName())
                 .role(request.getRole())
+                .department(request.getDepartmentId() != null
+
+                        ? departmentRepository.findById(request.getDepartmentId())
+
+                        .orElseThrow(() -> new RuntimeException("Подразделение не найдено"))
+
+                        : null)
                 .build();
 
         user = userRepository.save(user);
